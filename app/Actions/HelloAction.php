@@ -15,19 +15,17 @@ class HelloAction extends Message
      */
     public function check($issue, $comments): bool
     {
-
-        if(count($comments) === 0){
+        if (count($comments) === 0) {
             return true;
         }
 
         $botname = env('GITHUB_LOGIN');
 
-        foreach ($comments as $comment){
-            if($comment['user']['login'] == $botname) {
+        foreach ($comments as $comment) {
+            if ($comment['user']['login'] == $botname) {
                 return false;
             }
         }
-
 
         return true;
     }
@@ -43,5 +41,4 @@ class HelloAction extends Message
             'submitter' => $issue['user']['login'],
         ]);
     }
-
 }

@@ -7,9 +7,7 @@ namespace App;
 use GuzzleHttp\Client;
 
 /**
- * Class Message
- *
- * @package App
+ * Class Message.
  */
 class App
 {
@@ -44,16 +42,16 @@ class App
             'base_uri' => 'https://api.github.com/',
             'timeout'  => 10.0,
             'auth'     => [
-                $this->config['login'], $this->config['password']
-            ]
+                $this->config['login'], $this->config['password'],
+            ],
         ]);
     }
 
     /**
      * @return mixed
      */
-    public function getNotifications(){
-
+    public function getNotifications()
+    {
         $response = $this->client->request('GET',
             "https://api.github.com/repos/{$this->config['owner']}/{$this->config['repo']}/notifications");
 
@@ -65,9 +63,10 @@ class App
     /**
      * @return mixed
      */
-    public function readNotifications(){
+    public function readNotifications()
+    {
         $response = $this->client->request('PUT',
-            "https://api.github.com/notifications",[
+            'https://api.github.com/notifications', [
                 'body' => json_encode([
                     'last_read_at' => $this->date,
                 ]),
@@ -106,6 +105,7 @@ class App
     {
         $response = $this->client->request('get',
             "repos/{$this->config['owner']}/{$this->config['repo']}/issues/{$comment}/comments");
+
         return json_decode($response->getBody()->getContents(), true);
     }
 
@@ -122,18 +122,20 @@ class App
                     'body' => $text,
                 ]),
             ]);
+
         return json_decode($response->getBody()->getContents(), true);
     }
-
 
     /**
      * @param int $id
      * @return mixed
      */
-    public function unSubscription(int $id){
+    public function unSubscription(int $id)
+    {
         $response = $this->client->request('DELETE',
             "/notifications/threads/{$id}/subscription", [
             ]);
+
         return json_decode($response->getBody()->getContents(), true);
     }
 
@@ -142,11 +144,12 @@ class App
      * @param        $url
      * @return mixed
      */
-    public function toFollow($method = 'GET',$url){
+    public function toFollow($method, $url)
+    {
         $response = $this->client->request($method, $url);
+
         return json_decode($response->getBody()->getContents(), true);
     }
-
 
     /**
      * @param array $actions
@@ -154,15 +157,14 @@ class App
     public function run(array $actions)
     {
         $notifications = self::getNotifications();
-        $last_key = count($actions) -1;
+        $last_key = count($actions) - 1;
 
-        foreach ($notifications as $notification){
-
-            if($notification['subject']['type'] !== "Issue"){
+        foreach ($notifications as $notification) {
+            if ($notification['subject']['type'] !== 'Issue') {
                 continue;
             }
 
-            $issue = $this->toFollow('GET',$notification['subject']['url']);
+            $issue = $this->toFollow('GET', $notification['subject']['url']);
             $message = '';
             $comments = [];
 
@@ -171,7 +173,6 @@ class App
             }
 
             foreach ($actions as $key => $action) {
-
                 $action = new $action();
 
                 if ($action->check($issue, $comments)) {
@@ -179,18 +180,14 @@ class App
                 }
 
                 if ($last_key === $key) {
-
-                    if (!$action->stop && strlen(trim($message)) > 5) {
+                    if (! $action->stop && strlen(trim($message)) > 5) {
                         print_r(self::addComment($issue['number'], $message));
                     }
                     die();
                 }
             }
-
-
         }
 
         self::readNotifications();
     }
-
 }

@@ -10,7 +10,6 @@ $dotenv->overload();
 
 $app = new App\App();
 
-
 $app->run([
     App\Actions\HelloAction::class,
     App\Actions\MissingDataAction::class,
