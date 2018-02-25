@@ -9,7 +9,6 @@ use App\Message;
 
 class DocsAction extends Message
 {
-
     /**
      * @var
      */
@@ -24,18 +23,17 @@ class DocsAction extends Message
     {
         $app = new App();
 
-
         $title = $issue['title'];
-        $title = $this->stopWords($title, file(__DIR__ . '/../stop_words'));
+        $title = $this->stopWords($title, file(__DIR__.'/../stop_words'));
 
         $owner = env('GITHUB_OWNER');
         $repo = env('GITHUB_REPO');
 
         $response = $app->client->request('GET',
-            "/search/issues", [
+            '/search/issues', [
                 'query' => [
-                    'q'             => $title . "+repo:{$owner}/{$repo}",
-                ]
+                    'q'             => $title."+repo:{$owner}/{$repo}",
+                ],
             ]);
         $this->result = json_decode($response->getBody()->getContents(), true);
 
@@ -57,7 +55,7 @@ class DocsAction extends Message
         unset($items[0][0]);
 
         return $this->view('related_issue', [
-            'issues' => $items[0]
+            'issues' => $items[0],
         ]);
     }
 
@@ -76,20 +74,19 @@ class DocsAction extends Message
         $pattern = '/[0-9\W]/';
         $text = preg_replace($pattern, ',', $text);
         // Create an array from $text
-        $text_array = explode(",", $text);
+        $text_array = explode(',', $text);
         // remove whitespace and lowercase words in $text
         $text_array = array_map(function ($x) {
             return trim(strtolower($x));
         }, $text_array);
         foreach ($text_array as $term) {
-            if (!in_array($term, $stopwords)) {
+            if (! in_array($term, $stopwords)) {
                 $keywords[] = $term;
             }
-        };
+        }
 
         $keywords = array_filter($keywords ?? []);
 
-        return implode(" ", $keywords);
+        return implode(' ', $keywords);
     }
-
 }

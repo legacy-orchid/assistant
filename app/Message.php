@@ -7,9 +7,7 @@ namespace App;
 use Jenssegers\Blade\Blade;
 
 /**
- * Class Message
- *
- * @package App
+ * Class Message.
  */
 abstract class Message
 {
@@ -35,13 +33,12 @@ abstract class Message
      * @param $comments
      * @return bool
      */
-    abstract public function check($issue,$comments): bool;
+    abstract public function check($issue, $comments): bool;
 
     /**
      * @param $issue
      * @param $comments
      * @return mixed
      */
-    abstract public function action($issue,$comments);
-
+    abstract public function action($issue, $comments);
 }
