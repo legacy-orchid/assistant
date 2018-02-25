@@ -1,6 +1,6 @@
-# Simple GitHub Issue Bot
+# Assistant
 
-This is a bot for github.   
+Simple GitHub Issue Bot.  
 Who listens to creating a new issue in the repositories and thanks the user for that.
 
 
@@ -8,14 +8,22 @@ Who listens to creating a new issue in the repositories and thanks the user for 
 
 
 ```
-composer create-project tabuna/issue-bot [my-app-name]
+composer create-project orchid/assistant [my-app-name]
 ```
 
-Fill the `.env` file and run:
+Fill `.env` file and run:
 
 ```
-php run.php
+php assistant.php
 ```
+
+### Cron
+
+add cron job:
+```
+*/15 * * * * php /path/to/command assistant.php
+```
+
 
 ## License
 
