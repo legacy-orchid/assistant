@@ -27,5 +27,4 @@ class ByeAction extends Message
     {
         return $this->view('footer');
     }
-
 }

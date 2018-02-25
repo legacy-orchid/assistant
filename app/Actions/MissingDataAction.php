@@ -8,7 +8,6 @@ use App\Message;
 
 class MissingDataAction extends Message
 {
-
     /**
      * @var array
      */
@@ -16,7 +15,7 @@ class MissingDataAction extends Message
         'ORCHID Version'   => true,
         'Laravel Version'  => true,
         'PHP Version'      => true,
-        'Database Version' => true
+        'Database Version' => true,
     ];
 
     /**
@@ -28,11 +27,10 @@ class MissingDataAction extends Message
     {
         $validate = false;
 
-        foreach ($this->specifications as $key => $specification){
-
+        foreach ($this->specifications as $key => $specification) {
             if (strpos($issue['body'], $key) !== false) {
-               $this->specifications[$key] =  false;
-            }else{
+                $this->specifications[$key] = false;
+            } else {
                 $validate = true;
             }
         }
@@ -47,15 +45,14 @@ class MissingDataAction extends Message
      */
     public function action($issue, $comments)
     {
-        $specifications = array_filter($this->specifications, function($var){
+        $specifications = array_filter($this->specifications, function ($var) {
             return $var;
         });
 
         $specifications = array_keys($specifications);
 
-        return $this->view('missing_data',[
-            'missing_sections' => $specifications
+        return $this->view('missing_data', [
+            'missing_sections' => $specifications,
         ]);
     }
-
 }
