@@ -1,8 +1,8 @@
-  php:
-    preset: laravel
-    risky: true
-    tab-width: 4
-    use-tabs: false
-    finder:
-      name: "*.php"
-      not-name: "*.blade.php"
+php:
+  preset: laravel
+  risky: true
+  tab-width: 4
+  use-tabs: false
+  finder:
+    name: "*.php"
+    not-name: "*.blade.php"
